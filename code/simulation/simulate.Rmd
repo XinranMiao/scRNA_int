@@ -1,0 +1,284 @@
+---
+title: "Simulate single cell RNA data"
+author: "Xinran Miao"
+params:
+  raw_data: "human_pancreas_norm_complexBatch.h5ad"
+  c_type: "multiple"
+  n_cell: "2"
+  cell_times: "1"
+  seq_depth: "1000"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(scDesign2) # no
+library(copula)    # corKendall
+library(Rtsne)
+library(plyr)      # mapvalues
+library(reshape2)  # melt
+library(gridExtra) # arrangeGrob
+library(ggpubr)    # as_ggplot
+library(cowplot)   # draw_plot_label
+library(anndata)
+
+library(tidyverse); theme_set(theme_bw());
+```
+
+## set directories
+```{r}
+
+c_type = params$c_type
+
+derived_dat_path <- str_c("../../data/derived_data/", str_replace(params$raw_data, pattern = ".h5ad", replacement = ""),
+                           "/", c_type, "_", params$n_cell,"_", params$cell_times, "_", params$seq_depth, "/")
+
+if(!dir.exists(derived_dat_path)) {dir.create(derived_dat_path, recursive = TRUE)}
+```
+
+## Read data
+```{r}
+ad <- read_h5ad(paste0("../../data/raw_data/", params$raw_data))
+dat <- ad$X %>%
+  as.data.frame() %>%
+  as.matrix() %>%
+  t()
+colnames(dat) <- ad$obs$celltype
+```
+
+
+```{r}
+data_mat <- dat
+# remove spike-in -----------------------------------------------------------------------
+nonspikes <- which(!grepl("ercc", rownames(data_mat), ignore.case = TRUE))
+print(paste("number of spike-ins:", nrow(data_mat)-length(nonspikes)))
+data_mat <- data_mat[nonspikes, ,drop = FALSE]
+
+# explore basic structure of data -------------------------------------------------------
+dim(data_mat)
+table(colnames(data_mat))
+```
+
+```{r}
+unique_cell_type <- names(table(colnames(data_mat)))
+set.seed(1)
+train_idx <- unlist(sapply(unique_cell_type, function(x){
+  cell_type_idx <- which(colnames(data_mat) == x)
+  n_cell_total <- length(cell_type_idx)
+  sample(cell_type_idx, floor(n_cell_total/2))
+}))
+traincount <- data_mat[, train_idx]
+testcount <- data_mat[, -train_idx]
+```
+
+## fit model
+```{r warning=FALSE}
+# set function parameter values ---------------------------------------------------------
+if(c_type == "multiple") {
+  cell_type <- table(colnames(data_mat)) %>% sort(decreasing = TRUE) %>%
+    .[1:as.numeric(params$cell_times)] %>% names
+  n_cell_new <- ncol(testcount[, colnames(testcount) %in% cell_type])
+  
+} else{
+  n_cell_new <- ncol(testcount[, colnames(testcount) == c_type])
+}
+
+if(params$cell_times != "0") {
+  times <- as.numeric(params$cell_times) %>% round
+  n_cell_new <- n_cell_new * times
+}
+if(params$seq_depth != "0") {
+  seq_depth <- params$seq_depth
+}
+
+# fit model and simulate data -----------------------------------------------------------
+set.seed(1)
+fit_result <- fit_model_scDesign2(traincount, cell_type, sim_method = 'copula',
+                                        ncores = length(cell_type))
+saveRDS(fit_result, file = paste0(derived_dat_path, 'fit_result_multi_type_change.rds'))
+```
+
+## Simulate
+```{r}
+if(params$c_type != "multiple") {
+  if(params$seq_depth != "0") {
+  sim_count <- simulate_count_scDesign2(fit_result, 
+                                             n_cell_new = n_cell_new,
+                                             total_count_new = seq_depth,
+                                             sim_method = 'copula',
+                                             cell_type_prop = cell_type_prop)
+} else{
+  sim_count <- simulate_count_scDesign2(fit_result, 
+                                             n_cell_new = n_cell_new,
+                                             sim_method = 'copula',
+                                             cell_type_prop = cell_type_prop)
+}
+
+} else {
+  if(params$seq_depth != "0") {
+  sim_count <- simulate_count_scDesign2(fit_result, 
+                                             n_cell_new = n_cell_new,
+                                             total_count_new = seq_depth,
+                                             sim_method = 'copula')
+} else{
+  sim_count <- simulate_count_scDesign2(fit_result, 
+                                             n_cell_new = n_cell_new,
+                                             sim_method = 'copula')
+}
+
+}
+
+# save the model parameters and the simulated data --------------------------------------
+saveRDS(sim_count, file = paste0(derived_dat_path, 'sim_count.rds'))
+```
+
+## Write ad.h5ad file
+```{r}
+
+idx_interest <- c(1:length(ad$obs$celltype))[-train_idx]
+idx_interest <- which(ad$obs$celltype[idx_interest] %in% cell_type_sel)
+
+if(params$n_cell == "0") {
+  derived_ad <-  AnnData(
+  X = sim_count %>% as.matrix %>% t(),
+  obs = data.frame(tech = ad$obs$tech[idx_interest],
+                             celltype = c_type, 
+                             size_factors = ad$obs$size_factors[idx_interest])
+)
+} else{
+  derived_ad <-  AnnData(
+  X = sim_count %>% as.matrix %>% t(),
+  obs = data.frame(tech = rep(ad$obs$tech[idx_interest], times),
+                             celltype = rep(c_type, times),
+                             size_factors = rep(ad$obs$size_factors[idx_interest]), times),
+)
+}
+
+write_h5ad(derived_ad, filename = paste0(derived_dat_path, "ad.h5ad"))
+
+```
+
+
+## Visualization
+```{r}
+# a function for computing the marginal stats -------------------------------------------
+get_stats <- function(mat, group, log_trans = TRUE){
+  mean <- rowMeans(mat)
+  var <- apply(mat,1,var)
+  cv <- sqrt(var)/mean
+  zero_gene <- rowSums(mat < 1e-5)/ncol(mat)
+  zero_cell <- colSums(mat < 1e-5)/nrow(mat)
+  libsize <- colSums(mat)
+  
+  if(log_trans){
+    mean <- log10(mean + 1)
+    var <- log10(var + 1)
+    libsize <- log10(libsize + 1)
+  }
+  
+  summs <- list(mean = mean, var = var, cv = cv, drop_gene = zero_gene,
+                drop_cell = zero_cell, libsize = libsize)
+  summs = lapply(1:length(summs), function(i){
+    data.frame(value = summs[[i]], measure = names(summs)[i], group = group,
+               stringsAsFactors = FALSE)
+  })
+  summs = Reduce(rbind, summs)
+  return(summs)
+}
+
+# subset traincount and testcount to include only the selected cell type ----------------
+traincount_sel <- traincount[, colnames(traincount) %in% c_type]
+testcount_sel <- testcount[, colnames(testcount) %in% c_type]
+# compute the marginal stats ------------------------------------------------------------
+stats_train <- get_stats(traincount_sel, 'training')
+stats_test <- get_stats(testcount_sel, 'test')
+stats_scDesign2 <- get_stats(sim_count_copula, 'scDesign2')
+
+# organize the stat values as input for ggplot2 -----------------------------------------
+stats_dat <- rbind(stats_train, stats_test, stats_scDesign2)
+stats_dat$group <- factor(stats_dat$group, levels = c('training', 'test', 'scDesign2'))
+measures1 <-  c("mean", "var", "cv", "drop_gene",
+                "drop_cell", "libsize")
+measures2 <-  c("gene mean", "gene variance", "gene cv",
+                "gene zero prop.", "cell zero prop.", "cell library size")
+stats_dat$measure <- factor(stats_dat$measure, levels = measures1)
+stats_dat$measure <- mapvalues(stats_dat$measure, from = measures1, to = measures2)
+
+# create violin-plots to compare the marginal stat values -------------------------------
+stats_plot <- ggplot(stats_dat, aes(x = group, y = value)) +
+  geom_violin(scale = 'width', trim = TRUE) +
+  facet_wrap(~measure, scales = "free", ncol = 3) +
+  theme(strip.text = element_text(size=15),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text = element_text(size = 12),
+        axis.text.x = element_text(angle = 45, hjust = 1)) +
+  xlab("") + ylab("")
+print(stats_plot)
+ggsave(filename = paste0(derived_dat_path, ctype, "_stat_violin.png"), width   = 8, height = 6)
+```
+
+
+
+
+```{r}
+# select the top 100 highly expressed genes ---------------------------------------------
+gene_mean <- apply(testcount_sel, 1, mean)
+cutoff <- 100
+gene_sel <- order(gene_mean, decreasing = TRUE)[1:cutoff]
+
+# two functions for calculating the correlation matrix(-ces) of selected genes ----------
+get_cor_mat <- function(x, cor_fun){
+  sub_mat <- x[gene_sel, ]
+  cor_fun(t(sub_mat))
+}
+get_heatmap_dat <- function(mat_list, cor_fun){
+  cor_mat_list <- lapply(mat_list, get_cor_mat, cor_fun)
+  # reorder cor_mat entries according to hierarchical clustering result
+  cor_mat_list <- lapply(cor_mat_list, function(x){
+    x[hclust_result$order, hclust_result$order]})
+  # organize the cor values as input for ggplot2
+  cor_melted <- lapply(cor_mat_list, melt)
+  cor_dat <- Reduce(rbind, cor_melted)
+  cor_dat$group <- unlist(lapply(1:length(group_list), function(x){
+    rep(group_list[[x]], nrow(cor_melted[[x]]))
+  }))
+  return(cor_dat)
+}
+
+# calculate the correlations and organize as input for ggplot2 --------------------------
+rownames(sim_count_copula) <- rownames(traincount)
+mat_list <- list(train = traincount_sel, test = testcount_sel, scDesign2 = sim_count_copula)
+hclust_result <- hclust(as.dist(1-get_cor_mat(mat_list$test, cor)))
+group_list <- c('training data', 'test data', 'scDesign2')
+
+cor_dat <- get_heatmap_dat(mat_list, cor)
+tau_dat <- get_heatmap_dat(mat_list, corKendall)
+
+cor_tau_dat <- rbind(cor_dat, tau_dat)
+cor_tau_dat$group <- factor(cor_tau_dat$group, levels = group_list)
+cor_tau_dat$cor_type <- factor(c(rep('Pearson\nCorrelation', nrow(cor_dat)),
+                                 rep('Kendall\'s\ntau', nrow(tau_dat))),
+                               levels = c('Pearson\nCorrelation', 'Kendall\'s\ntau'))
+
+# create heatmaps to display the correlation values -------------------------------------
+cor_tau_plot <- ggplot(cor_tau_dat, aes(Var2, Var1, fill = value))+
+  facet_grid(vars(cor_type), vars(group)) + 
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white",
+                       midpoint = 0, limit = c(-1,1), space = "Lab",
+                       name="") +
+  theme(strip.background = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        strip.text = element_text(size=15)) +
+  xlab("") + ylab("") + coord_fixed()
+print(cor_tau_plot)
+```
+
+

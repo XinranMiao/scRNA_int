@@ -1,0 +1,19 @@
+universe = docker
+docker_image = xinranmiao/sg_int:v0
+log = sim.log
+
+executable = sim.sh
+output = sim.out
+error = sim.err
+#arguments =
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+#transfer_input_files = 
+request_cpus = 1
+request_memory = 5GB 
+request_disk = 15GB
+requirements = (has_avx == true) 
+
+queue raw_data, c_type, cell_times, n_cell, seq_depth
