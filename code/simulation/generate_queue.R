@@ -23,3 +23,6 @@ q2 <- data.frame(
 
 rbind(q1, q2) %>%
   write.table(file = "params.txt", quote = FALSE, row.names = FALSE, col.names = FALSE, sep = ",")
+
+rbind(q1[1:2, ], q2[1:2, ]) %>%
+  write.table(file = "test_params.txt", quote = FALSE, row.names = FALSE, col.names = FALSE, sep = ",")

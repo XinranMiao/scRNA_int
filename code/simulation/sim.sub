@@ -1,11 +1,11 @@
 universe = docker
 docker_image = xinranmiao/sg_int:v0
-log = sim.log
+log = sim$(raw_data)_$(c_type)_$(cell_times)_$(n_cell)_$(seq_depth).log
 
 executable = sim.sh
-output = sim.out
-error = sim.err
-#arguments =
+output = sim$(raw_data)_$(c_type)_$(cell_times)_$(n_cell)_$(seq_depth).out
+error = sim$(raw_data)_$(c_type)_$(cell_times)_$(n_cell)_$(seq_depth).err
+arguments = $(raw_data) $(c_type) $(cell_times) $(n_cell) $(seq_depth)
 
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
@@ -16,4 +16,4 @@ request_memory = 5GB
 request_disk = 15GB
 requirements = (has_avx == true) 
 
-queue raw_data, c_type, cell_times, n_cell, seq_depth
+queue raw_data c_type cell_times n_cell seq_depth from test_params.txt
