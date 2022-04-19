@@ -20,62 +20,60 @@ d767e3582df5: Pulling fs layer
 fadc84f62e7e: Pulling fs layer
 1bbaf8d2f9be: Pulling fs layer
 7703636f16c3: Pulling fs layer
+ad3f8ce28bc7: Waiting
+20acccacb880: Waiting
+ee24add8715f: Waiting
+c39e935055c4: Waiting
+dc1711e25230: Waiting
 577ef4f1fd0c: Waiting
 b5f85b8b6513: Waiting
 cca5ff88ac1e: Waiting
 7cbaeafcd922: Waiting
 7b52224c9c71: Waiting
 53fe5bab19e0: Waiting
-1bbaf8d2f9be: Waiting
 d767e3582df5: Waiting
-7703636f16c3: Waiting
-20acccacb880: Waiting
 092a434f1a9a: Waiting
-ee24add8715f: Waiting
 450dc399116d: Waiting
-c39e935055c4: Waiting
 fadc84f62e7e: Waiting
-dc1711e25230: Waiting
-ad3f8ce28bc7: Waiting
-8768f309dbd9: Verifying Checksum
+1bbaf8d2f9be: Waiting
+7703636f16c3: Waiting
 8768f309dbd9: Download complete
-ad3f8ce28bc7: Verifying Checksum
 ad3f8ce28bc7: Download complete
 e0b25ef51634: Verifying Checksum
 e0b25ef51634: Download complete
 20acccacb880: Verifying Checksum
 20acccacb880: Download complete
-c39e935055c4: Verifying Checksum
 c39e935055c4: Download complete
-ee24add8715f: Verifying Checksum
-ee24add8715f: Download complete
 683bffefa800: Verifying Checksum
 683bffefa800: Download complete
+ee24add8715f: Verifying Checksum
+ee24add8715f: Download complete
 b5f85b8b6513: Verifying Checksum
 b5f85b8b6513: Download complete
 577ef4f1fd0c: Verifying Checksum
 577ef4f1fd0c: Download complete
-7cbaeafcd922: Verifying Checksum
-7cbaeafcd922: Download complete
-7b52224c9c71: Verifying Checksum
-7b52224c9c71: Download complete
-53fe5bab19e0: Verifying Checksum
-53fe5bab19e0: Download complete
 cca5ff88ac1e: Verifying Checksum
 cca5ff88ac1e: Download complete
+7b52224c9c71: Verifying Checksum
+7b52224c9c71: Download complete
+7cbaeafcd922: Verifying Checksum
+7cbaeafcd922: Download complete
+53fe5bab19e0: Verifying Checksum
+53fe5bab19e0: Download complete
 d767e3582df5: Verifying Checksum
 d767e3582df5: Download complete
 450dc399116d: Verifying Checksum
 450dc399116d: Download complete
+fadc84f62e7e: Verifying Checksum
 fadc84f62e7e: Download complete
 dc1711e25230: Verifying Checksum
 dc1711e25230: Download complete
 092a434f1a9a: Verifying Checksum
 092a434f1a9a: Download complete
-1bbaf8d2f9be: Verifying Checksum
-1bbaf8d2f9be: Download complete
 7703636f16c3: Verifying Checksum
 7703636f16c3: Download complete
+1bbaf8d2f9be: Verifying Checksum
+1bbaf8d2f9be: Download complete
 e0b25ef51634: Pull complete
 8768f309dbd9: Pull complete
 683bffefa800: Pull complete
