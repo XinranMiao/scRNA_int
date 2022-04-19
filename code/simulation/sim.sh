@@ -20,5 +20,7 @@ Rscript -e "rmarkdown::render('simulate.Rmd',
 
 cd ../../data
 rm -r raw_data/*
-tar -czf derived_'$c_type'_'$n_cell'_'$cell_times'_'$seq_depth'.tar.gz derived_data/
-mv *tar.gz ~
+ls -l 1>&2
+tar -czf derived_"$c_type"_"$n_cell"_"$cell_times"_"$seq_depth".tar.gz derived_data
+mv *tar.gz ../..
+ls -l ../.. 1>&2
