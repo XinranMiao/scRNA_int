@@ -23,7 +23,7 @@ library(reshape2)  # melt
 library(gridExtra) # arrangeGrob
 library(ggpubr)    # as_ggplot
 library(cowplot)   # draw_plot_label
-library(anndata)
+#library(anndata)
 
 library(tidyverse); theme_set(theme_bw());
 ```
@@ -136,7 +136,7 @@ saveRDS(sim_count, file = paste0(derived_dat_path, 'sim_count.rds'))
 ```
 
 ## Write ad.h5ad file
-```{r}
+```{r eval=FALSE, include=FALSE}
 
 idx_interest <- c(1:length(ad$obs$celltype))[-train_idx]
 idx_interest <- which(ad$obs$celltype[idx_interest] %in% cell_type_sel)
