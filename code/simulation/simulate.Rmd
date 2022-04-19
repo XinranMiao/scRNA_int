@@ -41,12 +41,21 @@ if(!dir.exists(derived_dat_path)) {dir.create(derived_dat_path, recursive = TRUE
 
 ## Read data
 ```{r}
-ad <- read_h5ad(paste0("../../data/raw_data/", params$raw_data))
-dat <- ad$X %>%
-  as.data.frame() %>%
-  as.matrix() %>%
-  t()
-colnames(dat) <- ad$obs$celltype
+#ad <- read_h5ad(paste0("../../data/raw_data/", params$raw_data))
+#dat <- ad$X %>% as.data.frame() %>% as.matrix() %>% t()
+
+#dat%>% dim #19093 16382
+#save(dat, file = str_c("../../data/derived_data/", "dat.RData"))
+load(str_c("../../data/derived_data/", "dat.RData"))
+```
+```{r}
+#write.csv(dat, file = str_c("../../data/derived_data/",
+ #                           str_replace(params$raw_data, pattern = ".h5ad", replacement = ""), ".csv"), row.names = FALSE)
+#colnames(dat) <- ad$obs$celltype
+#dat2 <- read.csv(file = str_c("../../data/derived_data/",
+  #                          str_replace(params$raw_data, pattern = ".h5ad", replacement = ""), ".csv"))
+dim(dat)
+
 ```
 
 
