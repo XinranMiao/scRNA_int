@@ -1,3 +1,4 @@
 rm -r *log
 rm -r *out
-rm -r *err
+rm -r *er
+rm docker_stderror
