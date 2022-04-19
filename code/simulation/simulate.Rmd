@@ -3,7 +3,7 @@ title: "Simulate single cell RNA data"
 author: "Xinran Miao"
 params:
   raw_data: "human_pancreas_norm_complexBatch.h5ad"
-  c_type: "multiple"
+  c_type: "acinar"
   n_cell: "2"
   cell_times: "1"
   seq_depth: "1000"
@@ -16,10 +16,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 print("start running R")
-library(scDesign2) # no
-library(copula)    # corKendall
 library(Rtsne)
 library(plyr)      # mapvalues
+library(scDesign2) # no
+library(copula)    # corKendall
 library(reshape2)  # melt
 library(gridExtra) # arrangeGrob
 library(ggpubr)    # as_ggplot
@@ -41,12 +41,10 @@ if(!dir.exists(derived_dat_path)) {dir.create(derived_dat_path, recursive = TRUE
 ```
 
 ## Read data
-```{r}
-list.files(".")
-```
+
 ```{r}
 load("./dat.RData")
-
+#load(str_c("../../data/derived_data/", str_replace(params$raw_data, pattern = ".h5ad", replacement = ""), "/dat.RData"))
 ```
 ```{r}
 #write.csv(dat, file = str_c("../../data/derived_data/",
@@ -113,7 +111,7 @@ saveRDS(fit_result, file = paste0(derived_dat_path, 'fit_result_multi_type_chang
 
 ## Simulate
 ```{r}
-if(params$c_type != "multiple") {
+if(params$c_type == "multiple") {
   if(params$seq_depth != "0") {
   sim_count <- simulate_count_scDesign2(fit_result, 
                                              n_cell_new = n_cell_new,
