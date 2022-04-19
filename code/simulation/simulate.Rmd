@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+print("start running R")
 library(scDesign2) # no
 library(copula)    # corKendall
 library(Rtsne)
@@ -41,16 +42,11 @@ if(!dir.exists(derived_dat_path)) {dir.create(derived_dat_path, recursive = TRUE
 
 ## Read data
 ```{r}
-#ad <- read_h5ad(paste0("../../data/raw_data/", params$raw_data))
-#dat <- ad$X %>% as.data.frame() %>% as.matrix() %>% t()
+list.files(".")
+```
+```{r}
+load("./dat.RData")
 
-#dat%>% dim #19093 16382
-#save(dat, file = str_c("../../data/derived_data/",  str_c("../../data/derived_data/",
- #                           str_replace(params$raw_data, pattern = ".h5ad", replacement = ""), "dat.RData"))
-list.files(str_c("../../data/derived_data/", 
-                            str_replace(params$raw_data, pattern = ".h5ad", replacement = "")))
-load(str_c("../../data/derived_data/", 
-                            str_replace(params$raw_data, pattern = ".h5ad", replacement = ""),  "/dat.RData"))
 ```
 ```{r}
 #write.csv(dat, file = str_c("../../data/derived_data/",
