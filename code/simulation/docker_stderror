@@ -1,0 +1,92 @@
+Unable to find image 'xinranmiao/sg_int:v1' locally
+v1: Pulling from xinranmiao/sg_int
+e0b25ef51634: Pulling fs layer
+8768f309dbd9: Pulling fs layer
+683bffefa800: Pulling fs layer
+ad3f8ce28bc7: Pulling fs layer
+20acccacb880: Pulling fs layer
+ee24add8715f: Pulling fs layer
+c39e935055c4: Pulling fs layer
+dc1711e25230: Pulling fs layer
+577ef4f1fd0c: Pulling fs layer
+ad3f8ce28bc7: Waiting
+b5f85b8b6513: Pulling fs layer
+20acccacb880: Waiting
+ee24add8715f: Waiting
+cca5ff88ac1e: Pulling fs layer
+7cbaeafcd922: Pulling fs layer
+c39e935055c4: Waiting
+7b52224c9c71: Pulling fs layer
+53fe5bab19e0: Pulling fs layer
+dc1711e25230: Waiting
+d767e3582df5: Pulling fs layer
+092a434f1a9a: Pulling fs layer
+577ef4f1fd0c: Waiting
+450dc399116d: Pulling fs layer
+685d7f6d0ea9: Pulling fs layer
+cca5ff88ac1e: Waiting
+7cbaeafcd922: Waiting
+b5f85b8b6513: Waiting
+092a434f1a9a: Waiting
+35acbacb86e3: Pulling fs layer
+d767e3582df5: Waiting
+53fe5bab19e0: Waiting
+7b52224c9c71: Waiting
+450dc399116d: Waiting
+35acbacb86e3: Waiting
+8768f309dbd9: Download complete
+ad3f8ce28bc7: Download complete
+e0b25ef51634: Verifying Checksum
+e0b25ef51634: Download complete
+20acccacb880: Verifying Checksum
+20acccacb880: Download complete
+c39e935055c4: Verifying Checksum
+e0b25ef51634: Pull complete
+8768f309dbd9: Pull complete
+ee24add8715f: Verifying Checksum
+ee24add8715f: Download complete
+683bffefa800: Verifying Checksum
+683bffefa800: Download complete
+b5f85b8b6513: Verifying Checksum
+b5f85b8b6513: Download complete
+577ef4f1fd0c: Verifying Checksum
+577ef4f1fd0c: Download complete
+7cbaeafcd922: Verifying Checksum
+7cbaeafcd922: Download complete
+7b52224c9c71: Verifying Checksum
+7b52224c9c71: Download complete
+cca5ff88ac1e: Verifying Checksum
+cca5ff88ac1e: Download complete
+53fe5bab19e0: Verifying Checksum
+53fe5bab19e0: Download complete
+d767e3582df5: Verifying Checksum
+d767e3582df5: Download complete
+450dc399116d: Verifying Checksum
+450dc399116d: Download complete
+dc1711e25230: Verifying Checksum
+dc1711e25230: Download complete
+092a434f1a9a: Verifying Checksum
+092a434f1a9a: Download complete
+685d7f6d0ea9: Verifying Checksum
+685d7f6d0ea9: Download complete
+35acbacb86e3: Verifying Checksum
+35acbacb86e3: Download complete
+683bffefa800: Pull complete
+ad3f8ce28bc7: Pull complete
+20acccacb880: Pull complete
+ee24add8715f: Pull complete
+c39e935055c4: Pull complete
+dc1711e25230: Pull complete
+577ef4f1fd0c: Pull complete
+b5f85b8b6513: Pull complete
+cca5ff88ac1e: Pull complete
+7cbaeafcd922: Pull complete
+7b52224c9c71: Pull complete
+53fe5bab19e0: Pull complete
+d767e3582df5: Pull complete
+092a434f1a9a: Pull complete
+450dc399116d: Pull complete
+685d7f6d0ea9: Pull complete
+35acbacb86e3: Pull complete
+Digest: sha256:28dcb696e0bd205a62aa2e2bada896e54022e4d27e8c25e9e599a34dcdb71471
+Status: Downloaded newer image for xinranmiao/sg_int:v1

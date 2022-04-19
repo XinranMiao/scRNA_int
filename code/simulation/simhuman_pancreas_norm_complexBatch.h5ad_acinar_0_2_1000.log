@@ -1,0 +1,54 @@
+000 (9863866.001.000) 2022-04-19 10:40:51 Job submitted from host: <128.104.101.92:9618?addrs=128.104.101.92-9618+[2607-f388-107c-501-a236-9fff-fe3c-caa8]-9618&alias=submit2.chtc.wisc.edu&noUDP&sock=schedd_4918_eadb>
+...
+040 (9863866.001.000) 2022-04-19 10:41:34 Started transferring input files
+	Transferring to host: <128.105.245.130:9618?addrs=128.105.245.130-9618&alias=e2330.chtc.wisc.edu&noUDP&sock=slot1_9_517_05ee_25709>
+...
+040 (9863866.001.000) 2022-04-19 10:41:35 Finished transferring input files
+...
+001 (9863866.001.000) 2022-04-19 10:41:36 Job executing on host: <128.105.245.130:9618?addrs=128.105.245.130-9618&alias=e2330.chtc.wisc.edu&noUDP&sock=startd_2353_8a6f>
+...
+007 (9863866.001.000) 2022-04-19 10:43:51 Shadow exception!
+	Error from slot1_9@e2330.chtc.wisc.edu: Docker job has gone over memory limit of 5120 Mb
+	0  -  Run Bytes Sent By Job
+	157633232  -  Run Bytes Received By Job
+...
+012 (9863866.001.000) 2022-04-19 10:43:51 Job was held.
+	Error from slot1_9@e2330.chtc.wisc.edu: Docker job has gone over memory limit of 5120 Mb
+	Code 34 Subcode 0
+...
+013 (9863866.001.000) 2022-04-19 10:45:43 Job was released.
+	via condor_release (by user xmiao27)
+...
+040 (9863866.001.000) 2022-04-19 10:46:33 Started transferring input files
+	Transferring to host: <128.105.245.137:9618?addrs=128.105.245.137-9618&alias=e2337.chtc.wisc.edu&noUDP&sock=slot1_9_21824_bb71_25779>
+...
+040 (9863866.001.000) 2022-04-19 10:46:35 Finished transferring input files
+...
+001 (9863866.001.000) 2022-04-19 10:46:36 Job executing on host: <128.105.245.137:9618?addrs=128.105.245.137-9618&alias=e2337.chtc.wisc.edu&noUDP&sock=startd_3166_30ee>
+...
+006 (9863866.001.000) 2022-04-19 10:49:39 Image size of job updated: 8938
+	8938  -  MemoryUsage of job (MB)
+	9152892  -  ResidentSetSize of job (KB)
+...
+040 (9863866.001.000) 2022-04-19 10:49:39 Started transferring output files
+...
+040 (9863866.001.000) 2022-04-19 10:49:39 Finished transferring output files
+...
+005 (9863866.001.000) 2022-04-19 10:49:39 Job terminated.
+	(1) Normal termination (return value 1)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	7604  -  Run Bytes Sent By Job
+	157633232  -  Run Bytes Received By Job
+	7604  -  Total Bytes Sent By Job
+	315266464  -  Total Bytes Received By Job
+	Partitionable Resources :     Usage  Request Allocated 
+	   Cpus                 :      0.00        1         1 
+	   Disk (KB)            : 154048    15728640  15900643 
+	   IoHeavy              :                            0 
+	   Memory (MB)          :   8938       10000     10112 
+
+	Job terminated of its own accord at 2022-04-19T15:49:39Z with exit-code 1.
+...
