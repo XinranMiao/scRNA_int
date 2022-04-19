@@ -1,4 +1,4 @@
-human_pancreas_norm_complexBatch.h5ad,acinar,0,0,1000
+human_pancreas_norm_complexBatch.h5ad,acinar,2,1,1000
 human_pancreas_norm_complexBatch.h5ad,acinar,0,2,1000
 human_pancreas_norm_complexBatch.h5ad,multiple,2,0,1000
 human_pancreas_norm_complexBatch.h5ad,multiple,2,2,1000
