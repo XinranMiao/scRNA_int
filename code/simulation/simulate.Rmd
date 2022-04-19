@@ -145,6 +145,7 @@ if(params$c_type == "multiple") {
 
 # save the model parameters and the simulated data --------------------------------------
 saveRDS(sim_count, file = paste0(derived_dat_path, 'sim_count.rds'))
+cat("Save simulateted data")
 ```
 
 ## Write ad.h5ad file

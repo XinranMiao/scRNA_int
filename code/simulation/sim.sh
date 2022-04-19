@@ -18,7 +18,7 @@ Rscript -e "rmarkdown::render('simulate.Rmd',
                                 cell_times = '$4',
                                 seq_depth = '$5'),
                   output_file = 'simulate_human_pancreas_"$1"_"$2"_"$3"_"$4".html')"
-
+mv *html ../../data/derived_data/
 cd ../../data
 rm -r raw_data/*
 ls -l derived_data/ 1>&2
