@@ -101,7 +101,8 @@ if(params$cell_times != "0") {
 if(params$seq_depth != "0") {
   seq_depth <- params$seq_depth
 }
-
+```
+```{r}
 # fit model and simulate data -----------------------------------------------------------
 set.seed(1)
 fit_result <- fit_model_scDesign2(traincount, cell_type, sim_method = 'copula',
