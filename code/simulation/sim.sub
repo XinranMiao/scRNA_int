@@ -16,4 +16,4 @@ request_memory = 18GB
 request_disk = 13GB
 requirements = (has_avx == true) 
 
-queue raw_data c_type cell_times n_cell seq_depth from test_params.txt
+queue raw_data c_type cell_times n_cell seq_depth from params.txt
