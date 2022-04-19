@@ -99,15 +99,16 @@ if(params$cell_times != "0") {
   n_cell_new <- n_cell_new * times
 }
 if(params$seq_depth != "0") {
-  seq_depth <- params$seq_depth
+  seq_depth <- params$seq_depth %>% as.numeric
 }
 ```
-```{r}
+```{r, warning=FALSE}
 # fit model and simulate data -----------------------------------------------------------
 set.seed(1)
 fit_result <- fit_model_scDesign2(traincount, cell_type, sim_method = 'copula',
                                         ncores = length(cell_type))
-saveRDS(fit_result, file = paste0(derived_dat_path, 'fit_result_multi_type_change.rds'))
+saveRDS(fit_result, file = paste0(derived_dat_path, 'fit_result_', params$c_type, '_type_change.rds'))
+
 ```
 
 ## Simulate
