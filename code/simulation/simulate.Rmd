@@ -97,6 +97,7 @@ if(c_type == "multiple") {
   
 } else{
   n_cell_new <- ncol(testcount[, colnames(testcount) == c_type])
+  cell_type <- c_type
 }
 
 if(params$cell_times != "0") {
