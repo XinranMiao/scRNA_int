@@ -1,0 +1,6 @@
+
+
+```{r}
+fit_result <- readRDS("/Users/miaoxinran/Documents/projects/s22_877/scRNA_int/results/simulation/test/derived_data/human_pancreas_norm_complexBatch/acinar_0_2_1000/fit_result_acinar_type_change.rds")
+head(fit_result)
+```
