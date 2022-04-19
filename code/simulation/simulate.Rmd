@@ -4,7 +4,7 @@ author: "Xinran Miao"
 params:
   raw_data: "human_pancreas_norm_complexBatch.h5ad"
   c_type: "acinar"
-  n_cell: "2"
+  n_cell: "0"
   cell_times: "1"
   seq_depth: "1000"
 output: html_document
@@ -108,6 +108,8 @@ set.seed(1)
 fit_result <- fit_model_scDesign2(traincount, cell_type, sim_method = 'copula',
                                         ncores = length(cell_type))
 saveRDS(fit_result, file = paste0(derived_dat_path, 'fit_result_', params$c_type, '_type_change.rds'))
+#fit_result <- readRDS("/Users/miaoxinran/Documents/WISC/Courses/stat877s22/877project_integration/derived_data/human_pancreas_norm_complexBatch/ductal/copula_result_Stem_demo.rds")
+
 print("fitted model saved")
 ```
 
