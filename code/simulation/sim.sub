@@ -12,8 +12,8 @@ when_to_transfer_output = ON_EXIT
 
 transfer_input_files = sim.sh,../../data/derived_data/human_pancreas_norm_complexBatch/dat.RData
 request_cpus = 1
-request_memory = 19GB 
-request_disk = 15GB
+request_memory = 18GB 
+request_disk = 13GB
 requirements = (has_avx == true) 
 
 queue raw_data c_type cell_times n_cell seq_depth from test_params.txt
