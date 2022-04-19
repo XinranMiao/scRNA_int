@@ -1,4 +1,5 @@
 STAT 877 spring 22 course project
+-----
 
 Create the docker image from `Dockerfile`
 ```{bash}
