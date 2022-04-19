@@ -108,7 +108,7 @@ set.seed(1)
 fit_result <- fit_model_scDesign2(traincount, cell_type, sim_method = 'copula',
                                         ncores = length(cell_type))
 saveRDS(fit_result, file = paste0(derived_dat_path, 'fit_result_', params$c_type, '_type_change.rds'))
-
+print("fitted model saved")
 ```
 
 ## Simulate
