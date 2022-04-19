@@ -1,5 +1,5 @@
 universe = docker
-docker_image = xinranmiao/sg_int:v0
+docker_image = xinranmiao/sg_int:v1
 log = sim$(raw_data)_$(c_type)_$(cell_times)_$(n_cell)_$(seq_depth).log
 
 executable = sim.sh
@@ -10,7 +10,7 @@ arguments = $(raw_data) $(c_type) $(cell_times) $(n_cell) $(seq_depth)
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
 
-transfer_input_files = ../../data/derived_data/human_pancreas_norm_complexBatch/dat.RData
+transfer_input_files = sim.sh,../../data/derived_data/human_pancreas_norm_complexBatch/dat.RData
 request_cpus = 1
 request_memory = 5GB 
 request_disk = 15GB
