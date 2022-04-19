@@ -114,7 +114,7 @@ print("fitted model saved")
 ```
 
 ## Simulate
-```{r}
+```{r eval=FALSE, include=FALSE}
 if(params$c_type == "multiple") {
   if(params$seq_depth != "0") {
   sim_count <- simulate_count_scDesign2(fit_result, 
@@ -175,7 +175,7 @@ write_h5ad(derived_ad, filename = paste0(derived_dat_path, "ad.h5ad"))
 
 
 ## Visualization
-```{r}
+```{r eval=FALSE, include=FALSE}
 # a function for computing the marginal stats -------------------------------------------
 get_stats <- function(mat, group, log_trans = TRUE){
   mean <- rowMeans(mat)
@@ -236,7 +236,7 @@ ggsave(filename = paste0(derived_dat_path, ctype, "_stat_violin.png"), width   =
 
 
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # select the top 100 highly expressed genes ---------------------------------------------
 gene_mean <- apply(testcount_sel, 1, mean)
 cutoff <- 100
