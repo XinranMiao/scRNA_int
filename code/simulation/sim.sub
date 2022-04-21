@@ -12,7 +12,7 @@ when_to_transfer_output = ON_EXIT
 
 transfer_input_files = sim.sh,../../data/derived_data/human_pancreas_norm_complexBatch/dat.RData
 request_cpus = 1
-request_memory = 18GB 
+request_memory = 24GB 
 request_disk = 13GB
 requirements = (has_avx == true) 
 
