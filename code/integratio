@@ -1,0 +1,242 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "6f0052e5",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/Users/miaoxinran/anaconda3/lib/python3.7/site-packages/ipykernel/ipkernel.py:287: DeprecationWarning: `should_run_async` will not call `transform_cell` automatically in the future. Please pass the result to `transformed_cell` argument and any exception that happen during thetransform in `preprocessing_exc_tuple` in IPython 7.17 and above.\n",
+      "  and should_run_async(code)\n"
+     ]
+    }
+   ],
+   "source": [
+    "import scib\n",
+    "import scanpy as sc"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "id": "16de0a1c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "adata = sc.read(\"../data/raw_data/small_atac_gene_activity.h5ad\")\n",
+    "adata = sc.read(\"../derived_data/human_pancreas_norm_complexBatch/multiple/ad_change.h5ad\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "id": "a42fa1e9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "AnnData object with n_obs × n_vars = 2134 × 19084\n",
+       "    obs: 'tech', 'celltype', 'size_factors', 'X2'"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "adata"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "id": "b7f15a72",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Found 19084 genes among all datasets\n",
+      "[[0.         0.30744337 0.27238806 0.35294118 0.25328947]\n",
+      " [0.         0.         0.27238806 0.32352941 0.25      ]\n",
+      " [0.         0.         0.         0.32352941 0.25746269]\n",
+      " [0.         0.         0.         0.         0.29411765]\n",
+      " [0.         0.         0.         0.         0.        ]]\n",
+      "Processing datasets (0, 3)\n",
+      "Processing datasets (2, 3)\n",
+      "Processing datasets (1, 3)\n",
+      "Processing datasets (0, 1)\n",
+      "Processing datasets (3, 4)\n",
+      "Processing datasets (1, 2)\n",
+      "Processing datasets (0, 2)\n",
+      "Processing datasets (2, 4)\n",
+      "Processing datasets (0, 4)\n",
+      "Processing datasets (1, 4)\n"
+     ]
+    }
+   ],
+   "source": [
+    "res = scib.integration.scanorama(adata, batch = 'tech')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "83a01268",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/Users/miaoxinran/anaconda3/lib/python3.7/site-packages/ipykernel/ipkernel.py:287: DeprecationWarning: `should_run_async` will not call `transform_cell` automatically in the future. Please pass the result to `transformed_cell` argument and any exception that happen during thetransform in `preprocessing_exc_tuple` in IPython 7.17 and above.\n",
+      "  and should_run_async(code)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "AnnData object with n_obs × n_vars = 2134 × 19084\n",
+       "    obs: 'tech', 'celltype', 'size_factors', 'X2'\n",
+       "    obsm: 'X_scanorama', 'X_emb'"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "4de459b4",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.11870584214748617"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "scib.me.pcr_comparison(adata_pre = adata, adata_post = res, covariate = \"celltype\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "45ad3d42",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/Users/miaoxinran/anaconda3/lib/python3.7/site-packages/ipykernel/ipkernel.py:287: DeprecationWarning: `should_run_async` will not call `transform_cell` automatically in the future. Please pass the result to `transformed_cell` argument and any exception that happen during thetransform in `preprocessing_exc_tuple` in IPython 7.17 and above.\n",
+      "  and should_run_async(code)\n"
+     ]
+    },
+    {
+     "ename": "ValueError",
+     "evalue": "Did not find X_pca in `.obsm.keys()`. You need to compute it first.",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-31-0c16c3f1c54a>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0mget_ipython\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mrun_line_magic\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'pinfo'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'scib.me.kBET'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 2\u001b[0;31m \u001b[0mscib\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mme\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mkBET\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0madata\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mres\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mbatch_key\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m\"tech\"\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mlabel_key\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m\"celltype\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.7/site-packages/scib/metrics/kbet.py\u001b[0m in \u001b[0;36mkBET\u001b[0;34m(adata, batch_key, label_key, scaled, embed, type_, return_df, verbose)\u001b[0m\n\u001b[1;32m    101\u001b[0m     \u001b[0;31m# and increase neighborhoods for knn type data integrations\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    102\u001b[0m     \u001b[0;32mif\u001b[0m \u001b[0mtype_\u001b[0m \u001b[0;34m!=\u001b[0m \u001b[0;34m'knn'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 103\u001b[0;31m         \u001b[0madata_tmp\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0msc\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mpp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mneighbors\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0madata\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mn_neighbors\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;36m50\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0muse_rep\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0membed\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcopy\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mTrue\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    104\u001b[0m     \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    105\u001b[0m         \u001b[0;31m# check if pre-computed neighbours are stored in input file\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.7/site-packages/scanpy/neighbors/__init__.py\u001b[0m in \u001b[0;36mneighbors\u001b[0;34m(adata, n_neighbors, n_pcs, use_rep, knn, random_state, method, metric, metric_kwds, key_added, copy)\u001b[0m\n\u001b[1;32m    145\u001b[0m         \u001b[0mmetric\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mmetric\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    146\u001b[0m         \u001b[0mmetric_kwds\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mmetric_kwds\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 147\u001b[0;31m         \u001b[0mrandom_state\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mrandom_state\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    148\u001b[0m     )\n\u001b[1;32m    149\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.7/site-packages/scanpy/neighbors/__init__.py\u001b[0m in \u001b[0;36mcompute_neighbors\u001b[0;34m(self, n_neighbors, knn, n_pcs, use_rep, method, random_state, write_knn_indices, metric, metric_kwds)\u001b[0m\n\u001b[1;32m    768\u001b[0m         \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mn_neighbors\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mn_neighbors\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    769\u001b[0m         \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mknn\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mknn\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 770\u001b[0;31m         \u001b[0mX\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_choose_representation\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_adata\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0muse_rep\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0muse_rep\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mn_pcs\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mn_pcs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    771\u001b[0m         \u001b[0;31m# neighbor search\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    772\u001b[0m         \u001b[0muse_dense_distances\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m(\u001b[0m\u001b[0mmetric\u001b[0m \u001b[0;34m==\u001b[0m \u001b[0;34m'euclidean'\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mX\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshape\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m<\u001b[0m \u001b[0;36m8192\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mor\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0mknn\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.7/site-packages/scanpy/tools/_utils.py\u001b[0m in \u001b[0;36m_choose_representation\u001b[0;34m(adata, use_rep, n_pcs, silent)\u001b[0m\n\u001b[1;32m     57\u001b[0m             raise ValueError(\n\u001b[1;32m     58\u001b[0m                 \u001b[0;34m'Did not find {} in `.obsm.keys()`. '\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 59\u001b[0;31m                 \u001b[0;34m'You need to compute it first.'\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mformat\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0muse_rep\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     60\u001b[0m             )\n\u001b[1;32m     61\u001b[0m     \u001b[0msettings\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mverbosity\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mverbosity\u001b[0m  \u001b[0;31m# resetting verbosity\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mValueError\u001b[0m: Did not find X_pca in `.obsm.keys()`. You need to compute it first."
+     ]
+    }
+   ],
+   "source": [
+    "?scib.me.kBET\n",
+    "scib.me.kBET(adata = res, batch_key = \"tech\", label_key = \"celltype\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "id": "1421a312",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "?scib.me.silhouette"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "id": "49630a18",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "KeysView(AxisArrays with keys: X_scanorama, X_emb)\n"
+     ]
+    },
+    {
+     "ename": "KeyError",
+     "evalue": "'X_pca not in obsm'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mKeyError\u001b[0m                                  Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-37-92c7df3c0ffe>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mscib\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mme\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msilhouette\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0madata\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mres\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0membed\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'X_pca'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mgroup_key\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m\"final_cell_label\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/anaconda3/lib/python3.7/site-packages/scib/metrics/silhouette.py\u001b[0m in \u001b[0;36msilhouette\u001b[0;34m(adata, group_key, embed, metric, scale)\u001b[0m\n\u001b[1;32m     23\u001b[0m     \u001b[0;32mif\u001b[0m \u001b[0membed\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32min\u001b[0m \u001b[0madata\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mobsm\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mkeys\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     24\u001b[0m         \u001b[0mprint\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0madata\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mobsm\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mkeys\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 25\u001b[0;31m         \u001b[0;32mraise\u001b[0m \u001b[0mKeyError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34mf'{embed} not in obsm'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     26\u001b[0m     asw = silhouette_score(\n\u001b[1;32m     27\u001b[0m         \u001b[0mX\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0madata\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mobsm\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0membed\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mKeyError\u001b[0m: 'X_pca not in obsm'"
+     ]
+    }
+   ],
+   "source": [
+    "scib.me.silhouette(adata = res, embed = 'X_pca', group_key = \"final_cell_label\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
