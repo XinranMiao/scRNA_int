@@ -11,3 +11,7 @@ docker run -ti --rm=true username/image:tag /bin/bash
 docker push username/image:tag
 ```
 This image has been pushed as `xinranmiao/sg_int:v1`
+
+Reference
+-------
+`scIB` [package](https://github.com/theislab/scib), [reproducibility](https://github.com/theislab/scib-reproducibility).
