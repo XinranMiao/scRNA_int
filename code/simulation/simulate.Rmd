@@ -232,7 +232,7 @@ stats_plot <- ggplot(stats_dat, aes(x = group, y = value)) +
         axis.text.x = element_text(angle = 45, hjust = 1)) +
   xlab("") + ylab("")
 print(stats_plot)
-ggsave(filename = paste0(derived_dat_path, ctype, "_stat_violin.png"), width   = 8, height = 6)
+ggsave(filename = paste0(derived_dat_path, c_type, "_stat_violin.png"), width   = 8, height = 6)
 ```
 
 
