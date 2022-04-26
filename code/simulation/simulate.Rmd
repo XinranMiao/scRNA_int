@@ -79,6 +79,9 @@ train_idx <- unlist(sapply(unique_cell_type, function(x){
 }))
 traincount <- data_mat[, train_idx]
 testcount <- data_mat[, -train_idx]
+save(traincount, file = str_c(derived_dat_path, "traincount.RData"))
+save(testcount, file = str_c(derived_dat_path, "testcount.RData"))
+save(train_idx, file = str_c(derived_dat_path, "train_idx.RData"))
 ```
 
 ## fit model
@@ -86,7 +89,7 @@ testcount <- data_mat[, -train_idx]
 # set function parameter values ---------------------------------------------------------
 if(c_type == "multiple") {
   cell_type <- table(colnames(data_mat)) %>% sort(decreasing = TRUE) %>%
-    .[1:as.numeric(params$cell_times)] %>% names
+    .[1:as.numeric(params$n_cell)] %>% names
   n_cell_new <- ncol(testcount[, colnames(testcount) %in% cell_type])
   cell_type_prop <- table(colnames(testcount))[cell_type]
 
@@ -112,6 +115,11 @@ saveRDS(fit_result, file = paste0(derived_dat_path, 'fit_result_', params$c_type
 #fit_result <- readRDS("/Users/miaoxinran/Documents/WISC/Courses/stat877s22/877project_integration/derived_data/human_pancreas_norm_complexBatch/ductal/copula_result_Stem_demo.rds")
 
 print("fitted model saved")
+if(params$cell_times != "0") {
+  times <- as.numeric(params$cell_times) %>% round
+  n_cell_new <- fit_result$alpha$n_cell * times
+}
+
 ```
 
 ## Simulate
@@ -155,7 +163,7 @@ cat("Save simulateted data")
 idx_interest <- c(1:length(ad$obs$celltype))[-train_idx]
 idx_interest <- which(ad$obs$celltype[idx_interest] %in% cell_type_sel)
 
-if(params$n_cell == "0") {
+if(params$cell_times == "0") {
   derived_ad <-  AnnData(
   X = sim_count %>% as.matrix %>% t(),
   obs = data.frame(tech = ad$obs$tech[idx_interest],

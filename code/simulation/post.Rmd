@@ -62,13 +62,20 @@ obtain_para <- function(result_p,
 ```{r}
 c_type <- "acinar"
 wrong_rs <- c("../../results/simulation/test/derived_data/human_pancreas_norm_complexBatch/acinar_2_1_1000")
-for (c_type in c("acinar", "alpha", "beta", "delta", "ductal", "activated_stellate")) {
+for (c_type in c("acinar", "alpha", "beta", "delta", "ductal", "activated_stellate", "multiple")) {
   result_paths <- list.files("../../results/simulation/test/derived_data/human_pancreas_norm_complexBatch",
                            full.names = TRUE, pattern = c_type)
   for(result_p in result_paths) {
     if(result_p %in% wrong_rs) {
       next
     }
+  # obtain simulation result
+  sim_path <- list.files(result_p, pattern = "sim*", full.names = TRUE)
+  fit_path <- list.files(result_p, pattern = "*fit*", full.names = TRUE)
+  sim_result <- readRDS(sim_path)
+  fit_result <- readRDS(fit_path)
+  l <- obtain_para(result_p)
+  
   # set idx_interest
   data_mat <- dat
   unique_cell_type <- names(table(colnames(data_mat)))
@@ -80,15 +87,18 @@ for (c_type in c("acinar", "alpha", "beta", "delta", "ductal", "activated_stella
   }))
   traincount <- data_mat[, train_idx]
   testcount <- data_mat[, -train_idx]
-
-
-  idx_interest <- c(1:length(ad$obs$celltype))[-train_idx]
-  idx_interest <- which(ad$obs$celltype[idx_interest] == c_type)
   
-  # obtain simulation result
-  sim_path <- list.files(result_p, pattern = "sim*", full.names = TRUE)
-  sim_result <- readRDS(sim_path)
-  l <- obtain_para(result_p)
+  if(c_type == "multiple") {
+    c_type <- table(colnames(data_mat)) %>% sort(decreasing = TRUE) %>%
+    .[1:as.numeric(l$cell_times)] %>% names
+    n_cell_new <- ncol(testcount[, colnames(testcount) %in% c_type])
+    cell_type_prop <- table(colnames(testcount))[c_type]
+  }
+
+  idx_interest <- c(1:length(ad$obs$celltype))[train_idx]
+  idx_interest <- which(ad$obs$celltype[idx_interest] %in% c_type)
+  
+  
   
   # write h5ad file depending on how many cells are present in the derived data
   if(l$n_cell == 0) {
@@ -100,8 +110,12 @@ for (c_type in c("acinar", "alpha", "beta", "delta", "ductal", "activated_stella
     derived_ad <-  AnnData(
     X = sim_result %>% as.matrix %>% t(),
     obs = data.frame(tech = ad$obs$tech[idx_interest],
-                             celltype = c_type,
+                             celltype = colnames(sim_result),
                              size_factors = ad$obs$size_factors[idx_interest]),
+    layers = list(
+      spliced = matrix(0, nrow = nrow(derived_ad), ncol = ncol(derived_ad)),
+      unspliced = matrix(0, nrow = nrow(derived_ad), ncol = ncol(derived_ad))
+)
   )
 
   write_h5ad(derived_ad , filename = paste0(result_p, "/derived_ad.h5ad"))
@@ -115,7 +129,11 @@ for (c_type in c("acinar", "alpha", "beta", "delta", "ductal", "activated_stella
     X = sim_result %>% as.matrix %>% t(),
     obs = data.frame(tech = rep(ad$obs$tech[idx_interest], l$cell_times),
                              celltype = rep(c_type,  l$cell_times),
-                             size_factors = rep(ad$obs$size_factors[idx_interest]),  l$cell_times),
+                             size_factors = rep(ad$obs$size_factors[idx_interest]),
+                     l$cell_times),
+     layers = list(
+      spliced = matrix(0, nrow = nrow(derived_ad), ncol = ncol(derived_ad)),
+      unspliced = matrix(0, nrow = nrow(derived_ad), ncol = ncol(derived_ad)))
 )
 }
 
