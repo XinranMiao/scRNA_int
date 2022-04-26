@@ -301,6 +301,8 @@ cor_tau_plot <- ggplot(cor_tau_dat, aes(Var2, Var1, fill = value))+
         strip.text = element_text(size=15)) +
   xlab("") + ylab("") + coord_fixed()
 print(cor_tau_plot)
+ggsave(filename = paste0(derived_dat_path, c_type, "_cor_heat.png"), width   = 8, height = 6)
+
 ```
 
 
