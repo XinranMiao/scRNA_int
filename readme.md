@@ -15,3 +15,5 @@ This image has been pushed as `xinranmiao/sg_int:v1`
 Reference
 -------
 `scIB` [package](https://github.com/theislab/scib), [reproducibility](https://github.com/theislab/scib-reproducibility).
+
+`scDesign2` [documentation](https://htmlpreview.github.io/?https://github.com/JSB-UCLA/scDesign2/blob/master/vignettes/scDesign2.html)
