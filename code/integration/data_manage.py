@@ -1,16 +1,21 @@
 import scanpy as sc
-def path2para(path):
+def path2para(path, type = "sim_immune"):
     split_str = path.split("/")[-2].split("_")
-    if "activated" in split_str:
-        c_type = "activated_stellate"
-        n_cell = split_str[2]
-        cell_times = split_str[3]
-        seq_depth = split_str[4]
-    else:
-        c_type = split_str[0]
-        n_cell = split_str[1]
-        cell_times = split_str[2]
-        seq_depth = split_str[3]
+    if type == "sim_immnue": 
+        if "activated" in split_str:
+            c_type = "activated_stellate"
+            n_cell = split_str[2]
+            cell_times = split_str[3]
+            seq_depth = split_str[4]
+        else:
+            c_type = split_str[0]
+            n_cell = split_str[1]
+            cell_times = split_str[2]
+            seq_depth = split_str[3]
+    elif type == "ATAC":
+        split_str = path.split("/")[-1].split(".")[-2]
+        c_type = split_str
+        n_cell, cell_times, seq_depth = 0, 0, 0
     return c_type, n_cell, cell_times, seq_depth
 
 def scgen_vis(path, adata, res, fig_path):
