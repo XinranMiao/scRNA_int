@@ -3,9 +3,9 @@ title: "Simulate single cell RNA data"
 author: "Xinran Miao"
 params:
   raw_data: "human_pancreas_norm_complexBatch.h5ad"
-  c_type: "acinar"
-  n_cell: "0"
-  cell_times: "1"
+  c_type: "multiple"
+  n_cell: "2"
+  cell_times: "5"
   seq_depth: "1000"
 output: html_document
 ---
@@ -43,8 +43,8 @@ if(!dir.exists(derived_dat_path)) {dir.create(derived_dat_path, recursive = TRUE
 ## Read data
 
 ```{r}
-load("./dat.RData")
-#load(str_c("../../data/derived_data/", str_replace(params$raw_data, pattern = ".h5ad", replacement = ""), "/dat.RData"))
+#load("./dat.RData")
+load(str_c("../../data/derived_data/", str_replace(params$raw_data, pattern = ".h5ad", replacement = ""), "/dat.RData"))
 ```
 ```{r}
 #write.csv(dat, file = str_c("../../data/derived_data/",
@@ -78,6 +78,7 @@ train_idx <- unlist(sapply(unique_cell_type, function(x){
   sample(cell_type_idx, floor(n_cell_total/2))
 }))
 traincount <- data_mat[, train_idx]
+dim(traincount) # dim(traincount)
 testcount <- data_mat[, -train_idx]
 save(traincount, file = str_c(derived_dat_path, "traincount.RData"))
 save(testcount, file = str_c(derived_dat_path, "testcount.RData"))
@@ -115,10 +116,7 @@ saveRDS(fit_result, file = paste0(derived_dat_path, 'fit_result_', params$c_type
 #fit_result <- readRDS("/Users/miaoxinran/Documents/WISC/Courses/stat877s22/877project_integration/derived_data/human_pancreas_norm_complexBatch/ductal/copula_result_Stem_demo.rds")
 
 print("fitted model saved")
-if(params$cell_times != "0") {
-  times <- as.numeric(params$cell_times) %>% round
-  n_cell_new <- fit_result$alpha$n_cell * times
-}
+
 
 ```
 
@@ -159,9 +157,11 @@ cat("Save simulateted data")
 
 ## Write ad.h5ad file
 ```{r eval=FALSE, include=FALSE}
+library(anndata)
+ad <- read_h5ad("../../data/raw_data/human_pancreas_norm_complexBatch.h5ad")
 
 idx_interest <- c(1:length(ad$obs$celltype))[-train_idx]
-idx_interest <- which(ad$obs$celltype[idx_interest] %in% cell_type_sel)
+idx_interest <- which(ad$obs$celltype[idx_interest] %in% cell_type)
 
 if(params$cell_times == "0") {
   derived_ad <-  AnnData(
