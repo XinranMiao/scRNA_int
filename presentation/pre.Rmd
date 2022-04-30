@@ -1,0 +1,72 @@
+---
+title: "Minimum-Distortion Embedding"
+author: "Xinran Miao"
+date: "Apr 11 2022"
+output:
+  xaringan::moon_reader:
+    css: ["default", "css/xaringan-themer.css"]
+    lib_dir: libs
+    self_contained: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      ratio: "16:9"
+    seal: false
+---
+
+
+class: bottom, right, my_title
+$\def\trans{^{\text{T}}}$
+$\def\tr{\text{tr}}$
+$\def\vect{\text{vec}}$
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+library(knitr)
+library(tidyverse)
+library(RefManageR)
+opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = T, dpi = 200, fig.align = "center", fig.width = 6, fig.height = 3)
+BibOptions(
+  check.entries = FALSE, 
+  bib.style = "authoryear", 
+  cite.style = "authoryear",
+  style = "markdown",
+  hyperlink = FALSE, 
+  dashed = FALSE
+)
+bib <- ReadBib( "ref.bib")
+```
+
+
+## Single cell RNA integration
+
+
+.pull[
+
+
+
+Xinran Miao
+
+05/02/2022
+
+]
+
+
+---
+# Introduction 
+
+---
+
+
+---
+
+class: middle, right, my_end
+
+
+
+# Thank You! <br> Questions?
+
+---
+### References
+```{r, results = "asis"}
+PrintBibliography(bib)
+```
