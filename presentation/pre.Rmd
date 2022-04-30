@@ -177,6 +177,9 @@ include_graphics("figures/scgen100.png")
     * High-dimensional latent space leads to better batch removal and worse biological conservation.
     * That being said, it's hard to tell the difference in visualizations on 2d space.
 * The choice of latent space dimension doesn't affect the rank across methods.
+
+# Reproducibility
+* Results can be reproduced via https://github.com/XinranMiao/scRNA_int (not yet finished).
 ---
 
 class: middle, left, my_end
