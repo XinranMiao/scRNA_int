@@ -1,0 +1,13 @@
+,ad,dataset,c_type,n_cell,cell_times,seq_depth,method,metric,evaluation,fig_path,hyper_para
+0,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,lisi,,scgen_immune_n_latent_5,5
+1,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,clisi,,scgen_immune_n_latent_5,5
+2,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,sihouette_batch,0.7094871091740035,scgen_immune_n_latent_5,5
+3,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,sihouette,0.4570302665233612,scgen_immune_n_latent_5,5
+4,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,lisi,,scgen_immune_n_latent_50,50
+5,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,clisi,,scgen_immune_n_latent_50,50
+6,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,sihouette_batch,0.70311494154103,scgen_immune_n_latent_50,50
+7,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,sihouette,0.46084151789546013,scgen_immune_n_latent_50,50
+8,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,lisi,,scgen_immune_n_latent_100,100
+9,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,clisi,,scgen_immune_n_latent_100,100
+10,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,sihouette_batch,0.7258380789041244,scgen_immune_n_latent_100,100
+11,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,sihouette,0.45041126012802124,scgen_immune_n_latent_100,100

@@ -1,0 +1,61 @@
+---
+title: "Visualization"
+author: "Xinran Miao"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(viridis)
+vis_theme <- theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5),
+            axis.text = element_text(size = 15, face = "bold"),
+            legend.text = element_text(size = 15),
+            title = element_text(size = 15,face = 'bold'))
+
+fig_path <- "../../presentation/figures/"
+```
+
+
+```{r}
+scgen_raw <- read.csv("integration_results/scgen_raw.csv") %>% select(-X)
+scvi <- read.csv("integration_results/scvi_raw.csv") %>%
+  select(- X)
+```
+```{r}
+df_plot <- scvi %>%
+  rbind(scgen_raw) %>%
+  #mutate(hyper_para = as.factor(hyper_para))
+  drop_na() %>%
+  mutate(metric = str_replace_all(metric, "sihouette_batch", "batch ASW")) %>%
+  mutate(metric = str_replace_all(metric, "sihouette", "cell type ASV"))
+
+# order methods using averaged batch removal effects
+order_method <- df_plot %>%
+  filter(metric == "batch ASW") %>%
+  group_by(method) %>%
+  summarise(m = mean(evaluation)) %>%
+  arrange( - m) %>%
+  select(method) %>%
+  unlist
+```
+
+
+```{r}
+df_plot %>%
+  mutate(method = factor(method, levels = order_method)) %>%
+  ggplot() +
+  geom_point(aes(x = method, y = evaluation, color = hyper_para, shape = metric),
+             size = 5) +
+  scale_color_viridis() +
+  vis_theme +
+  labs(x = "Method", y = "Score", color = "Dimension of latent space",
+       shape = "Metric")
+ggsave(filename = str_c(fig_path, "scatter_latent.png"), width = 8, height = 5)
+```
+
