@@ -219,7 +219,7 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
       right: 0px;
       bottom: 0px;
       left: 5px;
-      opacity: 0.4;
+      opacity: 0.12;
       z-index: -1;
 }
 
@@ -252,9 +252,9 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
       background-size: cover;
       position: absolute;
       top: 5px;
-      right: 0px;
+      right: 5px;
       bottom: 0px;
       left: 5px;
-      opacity: 0.3;
+      opacity: 0.2;
       z-index: -1;
 }

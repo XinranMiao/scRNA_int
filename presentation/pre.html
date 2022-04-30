@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Bentchmarking single cell transcriptomics integration methods</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Xinran Miao" />
+    <script src="libs/header-attrs-2.13/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+class: middle, left, my_title
+`\(\def\trans{^{\text{T}}}\)`
+`\(\def\tr{\text{tr}}\)`
+`\(\def\vect{\text{vec}}\)`
+
+
+
+
+## Benchmarking single cell RNA sequencing integration
+
+
+.pull[
+
+
+
+Xinran Miao
+
+05/02/2022
+
+]
+
+
+---
+# Background
+
+* **Dataset**: Single-cell RNA sequencing (scRNA-seq) datasets.
+    * each dataset consists of a `cell` by `gene` expression matrix, where cells are annotated with batches and labels.
+* **Goal**: Combining high-throughput sequencing datasets to produce a self-consistent version of the data for downstream analysis.
+
+* **Reason**: Integrating scRNA-seq helps biological findings.
+
+
+
+* **Challenges**: 
+   * Dealing with noise, sparsity, batch effects and rare cell types.
+   * Evaluating integration methods.
+
+---
+# Background
+
+
+
+.pull-left[
+* (Luecken, Büttner, Chaichoompu, Danese, Interlandi, Müller, Strobl, Zappia, Dugas, Colomé-Tatché, and others, 2022) benchmarked 68 methods in 13 integration tasks.
+* They used 14 metrics to evaluate integration methods on their ability to
+   * **remove batch effects**, and
+   * **conserve biological variations**.
+* They provided guidelines to choose an integration method given a task.
+* For all methods, they used default parameters.
+]
+
+.pull-right[
+
+
+&lt;img src="figures/fig3a.png" width="400" style="display: block; margin: auto;" /&gt;
+]
+---
+
+# Methods
+
+* Integrating scRNA-seq datasets usually include two parts:
+    * jointly **embedding** high-dimensional input onto a shared latent space, and
+    * (soft) **clustering** cells that incorporates annotated information (e.g. cell type).
+
+* In this presentation, we aim to study the dependence of integration methods on the dimension of latent space.
+* We focus on three methods that build deep generative models: 
+    * `scVI`(Lopez, Regier, Cole, Jordan, and Yosef, 2018),
+    * `scGen` (Lotfollahi, Wolf, and Theis, 2019), and
+    * `scANVI`(Xu, Lopez, Mehlman, Regier, Jordan, and Yosef, 2021).
+
+
+---
+
+# Evaluation
+* Average silhoutte width (ASW) measures the separation of clusters.
+* We use modified **batch ASW** and **cell type ASW** to evaluate the ability of batch removal and biogical conservation, respectively.
+* For both, the larger ASW we have, the better.
+---
+
+# Real-data analysis: human immune cell integration
+* Task: integrating 5 datasets of 10 batches (donors) with cells from peripheral blood and bone marrow, annotated by cell types
+* According to (Luecken, Büttner, Chaichoompu, et al., 2022), `scANVI` is one of the best methods, evaluated by a weighted mean of 14 metrics.
+---
+# Results
+
+.pull-left[
+* We vary the dimension of latent space, and evaluate `scvi`, `scanvi` and `scgen` using batch ASW and cell type ASW.
+* Overall, `scgen` works worst.
+* For `scvi` and `scanvi`, there is a trade-off between removing batch effects and conserving biological variations.
+   * High-dimensional latent space leads to better batch removal and worse biological conservation.
+   * The choice of latent space dimension doesn't affect the rank across methods.
+]
+
+.pull-right[
+
+&lt;img src="figures/scatter_latent.png" width="600" style="display: block; margin: auto;" /&gt;
+]
+
+
+
+---
+# Results
+
+Latent space fitted by `scvi` projected onto 2d space, with dimension of latent space (left) 5 and (right) 100, colored by (top) batches and (bottom) cell types. 
+
+.pull-left[
+
+&lt;img src="figures/scvi5.png" width="400" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+&lt;img src="figures/scvi100.png" width="400" style="display: block; margin: auto;" /&gt;
+]
+---
+
+# Results
+
+Latent space fitted by (left) `scanvi` and `scgen` projected onto 2d space, , colored by (top) batches and (bottom) cell types. 
+
+.pull-left[
+
+&lt;img src="figures/scanvi100.png" width="400" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+&lt;img src="figures/scgen100.png" width="400" style="display: block; margin: auto;" /&gt;
+]
+---
+# Takeaways
+
+* For each method, the performance of integration methods is dependent on the dimension of latent space.
+    * High-dimensional latent space leads to better batch removal and worse biological conservation.
+    * That being said, it's hard to tell the difference in visualizations on 2d space.
+* The choice of latent space dimension doesn't affect the rank across methods.
+---
+
+class: middle, left, my_end
+
+
+# Thank You! &lt;br&gt; Questions?
+
+---
+### References
+Luecken, M. D., M. Büttner, K. Chaichoompu, et al. (2022).
+"Benchmarking atlas-level data integration in single-cell genomics".
+In: _Nature methods_ 19.1, pp. 41-50.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
