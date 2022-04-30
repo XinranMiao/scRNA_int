@@ -72,7 +72,7 @@ Xinran Miao
 
 
 .pull-left[
-* `r Citep(bib, c("luecken2022benchmarking"))` benchmarked 68 methods in 13 integration tasks.
+* `r Citep(bib, c("luecken2022benchmarking"))` benchmarked 19 methods in 13 integration tasks.
 * They used 14 metrics to evaluate integration methods on their ability to
    * **remove batch effects**, and
    * **conserve biological variations**.
