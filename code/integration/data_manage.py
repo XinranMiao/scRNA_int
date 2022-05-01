@@ -69,3 +69,21 @@ def scanvi_vis(adata, vae, fig_path):
         ncols=1,
         save = fig_path + "scanvi_corrected_latent"
     )
+
+def scgen_vis(path, adata, res, fig_path, batch = "tech", label = "celltype"):
+    # visualize the original data
+    adata = sc.read(path)
+    sc.pp.neighbors(adata)
+    sc.tl.umap(adata)
+    sc.pl.umap(adata, color=[batch, label], wspace=.5, frameon=False, save = fig_path + "_original_umap.png")
+
+    # integrated data
+    sc.pp.neighbors(res)
+    sc.tl.umap(res)
+    sc.pl.umap(res, color=[batch, label], wspace=0.4, frameon=False, save = fig_path + "_integrated_umap.png")
+
+    # corrected latent space
+    sc.pp.neighbors(res, use_rep ="corrected_latent")
+    sc.tl.umap(res)
+    sc.pl.umap(res, color=[batch, label], wspace=0.4, frameon=False, save = fig_path + "_latent_umap.png")
+
