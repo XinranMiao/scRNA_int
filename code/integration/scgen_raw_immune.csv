@@ -1,0 +1,10 @@
+,ad,dataset,c_type,n_cell,cell_times,seq_depth,method,metric,evaluation,fig_path,hyper_para
+0,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,pcr,0.0,immune,5
+1,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,nmi,0.07837369020085144,immune,5
+2,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,ari,0.028379073573485902,immune,5
+3,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,pcr,0.0,immune,50
+4,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,nmi,0.07837369020085144,immune,50
+5,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,ari,0.028379073573485902,immune,50
+6,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,pcr,0.0,immune,100
+7,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,nmi,0.07837369020085144,immune,100
+8,path,human_pancreas_norm_complexBatch,all,0,0,0,scgen,ari,0.028379073573485902,immune,100
