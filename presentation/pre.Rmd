@@ -106,7 +106,7 @@ include_graphics("figures/fig3a.png")
 ---
 
 # Evaluation
-* Average silhoutte width (ASW) measures the separation of clusters.
+* Average silhouette width (ASW) measures the separation of clusters.
 * We use modified **batch ASW** and **cell type ASW** to evaluate the ability of batch removal and biogical conservation, respectively.
 * For both, the larger ASW we have, the better.
 ---
