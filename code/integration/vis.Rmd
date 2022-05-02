@@ -16,14 +16,15 @@ vis_theme <- theme_bw() +
   theme(plot.title = element_text(hjust = 0.5),
             axis.text = element_text(size = 15, face = "bold"),
             legend.text = element_text(size = 15),
-            title = element_text(size = 15,face = 'bold'))
+            title = element_text(size = 15,face = 'bold'),
+        strip.text.x = element_text(size = 10, face = "bold"))
 
 fig_path <- "../../presentation/figures/"
 ```
 
-
+## Immune cells
 ```{r}
-scgen_raw <- read.csv("integration_results/scgen_raw.csv") %>% select(-X)
+scgen_raw <- read.csv("integration_results/scgen_immune_asw.csv") %>% select(-X)
 scvi <- read.csv("integration_results/scvi_raw.csv") %>%
   select(- X)
 ```
@@ -58,4 +59,52 @@ df_plot %>%
        shape = "Metric")
 ggsave(filename = str_c(fig_path, "scatter_latent.png"), width = 8, height = 5)
 ```
+
+
+
+
+## ATAC
+```{f}
+rename_ds <- function(s,){
+  str_split(s, pattern = "small_atac_", simplify = TRUE)[2] %>% str_replace(".h5ad", "")
+}
+scgen_raw <- read.csv("integration_results/scgen_actc_asw.csv") %>%
+  select(-X) %>% 
+  mutate(ds = sapply(c_type, rename_ds) %>% unlist)
+scvi <- read.csv("integration_results/scvi_raw_atac.csv") %>%
+  select(- X)%>%
+  mutate(ds = sapply(ad, rename_ds) %>% unlist)
+```
+```{r}
+df_plot <- scvi %>%
+  rbind(scgen_raw) %>%
+  #mutate(hyper_para = as.factor(hyper_para))
+  drop_na() %>%
+  mutate(metric = str_replace_all(metric, "sihouette_batch", "batch ASW")) %>%
+  mutate(metric = str_replace_all(metric, "sihouette", "cell type ASV"))
+
+# order methods using averaged batch removal effects
+order_method <- df_plot %>%
+  filter(metric == "batch ASW") %>%
+  group_by(method) %>%
+  summarise(m = mean(evaluation)) %>%
+  arrange( - m) %>%
+  select(method) %>%
+  unlist
+```
+
+
+```{r}
+df_plot %>%
+  mutate(method = factor(method, levels = order_method)) %>%
+  ggplot() +
+  geom_point(aes(x = method, y = evaluation, color = hyper_para, shape = metric),
+             size = 5) +
+  scale_color_viridis() +
+  facet_wrap(~ ds) +
+  vis_theme +
+  labs(x = "Method", y = "Score", color = "Dimension of latent space",
+       shape = "Metric")
+ggsave(filename = str_c(fig_path, "atac_scatter_latent.png"), width = 8, height = 5)
+
 

@@ -23,6 +23,7 @@ $\def\vect{\text{vec}}$
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 library(knitr)
 library(tidyverse)
+library(xaringan)
 library(RefManageR)
 opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = T, dpi = 200, fig.align = "center", fig.width = 6, fig.height = 3)
 BibOptions(
@@ -120,8 +121,8 @@ include_graphics("figures/fig3a.png")
 * We vary the dimension of latent space, and evaluate `scvi`, `scanvi` and `scgen` using batch ASW and cell type ASW.
 * Overall, `scgen` works worst.
 * For `scvi` and `scanvi`, there is a trade-off between removing batch effects and conserving biological variations.
-   * High-dimensional latent space leads to better batch removal and worse biological conservation.
-   * The choice of latent space dimension doesn't affect the rank across methods.
+   * Higher-dimensional latent space tends to have better batch correction.
+   * For conservation of biological variations, the choice of dimension is unclear (may present opposite order in other datasets). 
 ]
 
 .pull-right[
@@ -173,10 +174,12 @@ include_graphics("figures/scgen100.png")
 ---
 # Takeaways
 
-* For each method, the performance of integration methods is dependent on the dimension of latent space.
-    * High-dimensional latent space leads to better batch removal and worse biological conservation.
-    * That being said, it's hard to tell the difference in visualizations on 2d space.
+* Across methods, there is a trade-off between batch removal and conservation of biological variations.
 * The choice of latent space dimension doesn't affect the rank across methods.
+* For each method, the performance of integration methods is dependent on the dimension of latent space.
+    * High-dimensional latent space leads to better batch removal.
+    * That being said, it's hard to tell the difference in visualizations on 2d space.
+
 
 # Reproducibility
 * Results can be reproduced via https://github.com/XinranMiao/scRNA_int (not yet finished).
