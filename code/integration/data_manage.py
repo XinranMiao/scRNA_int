@@ -70,20 +70,35 @@ def scanvi_vis(adata, vae, fig_path):
         save = fig_path + "scanvi_corrected_latent"
     )
 
-def scgen_vis(path, adata, res, fig_path, batch = "tech", label = "celltype"):
-    # visualize the original data
-    adata = sc.read(path)
-    sc.pp.neighbors(adata)
-    sc.tl.umap(adata)
-    sc.pl.umap(adata, color=[batch, label], wspace=.5, frameon=False, save = fig_path + "_original_umap.png")
+def scgen_vis(adata, model, fig_path, batchname, labelname, type = "mde"):
+    if type == "mde":
+        adata.obsm["X_scgen"] = model.get_latent_representation()
+        sc.pp.neighbors(adata, use_rep="X_scgen")
+        sc.tl.leiden(adata)
+        adata.obsm["X_mde"] = mde(adata.obsm["X_scgen"])
+        sc.pl.embedding(
+            adata,
+            basis="X_mde",
+            color=[batchname, labelname],
+            frameon =False,
+            ncols = 1,
+            save = fig_path + "scgen_corrected_latent"
+        )
+    elif type == "umap":
+            # visualize the original data
+        adata = sc.read(path)
+        sc.pp.neighbors(adata)
+        sc.tl.umap(adata)
+        sc.pl.umap(adata, color=[batch, label], wspace=.5, frameon=False, save = fig_path + "_original_umap.png")
 
-    # integrated data
-    sc.pp.neighbors(res)
-    sc.tl.umap(res)
-    sc.pl.umap(res, color=[batch, label], wspace=0.4, frameon=False, save = fig_path + "_integrated_umap.png")
+        # integrated data
+        sc.pp.neighbors(res)
+        sc.tl.umap(res)
+        sc.pl.umap(res, color=[batch, label], wspace=0.4, frameon=False, save = fig_path + "_integrated_umap.png")
 
-    # corrected latent space
-    sc.pp.neighbors(res, use_rep ="corrected_latent")
-    sc.tl.umap(res)
-    sc.pl.umap(res, color=[batch, label], wspace=0.4, frameon=False, save = fig_path + "_latent_umap.png")
+        # corrected latent space
+        sc.pp.neighbors(res, use_rep ="corrected_latent")
+        sc.tl.umap(res)
+        sc.pl.umap(res, color=[batch, label], wspace=0.4, frameon=False, save = fig_path + "_latent_umap.png")
+
 
